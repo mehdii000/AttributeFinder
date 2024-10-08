@@ -1,0 +1,104 @@
+@font-face {
+    font-family: 'Minecraft'; /* Define a name for the font */
+    src: url('assets/mcfont.otf') format('opentype'); /* Path to your font file */
+}
+
+:root {
+    --main-margin: 12px;
+}
+
+body {
+    margin: 0 0;
+    overflow: hidden;
+    background-image: url('assets/bg.png');
+}
+
+.debug-outline {
+    border: 2px solid yellow;
+}
+
+.main-div {
+    margin: var(--main-margin) var(--main-margin);
+    width: calc(100% - var(--main-margin)*2);
+    height: calc(100vh - var(--main-margin)*2);
+}
+
+.input-container, .button-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.search-input {
+    outline: none;
+    margin: 0 1%;
+    border: 5px solid white;
+    background-color: black;
+    width: 80%;
+    height: 70%;
+    font-size: 300%;
+    font-family: 'Minecraft', Arial;
+    color: white;
+    padding-left: 2%;
+}
+.search-input:focus {
+    border: 5px solid rgb(226, 236, 88);
+}
+
+.search-button {
+    width: 60%;
+    height: 40%;
+    border: 4px solid white;
+    background-color: black;
+    font-family: 'Minecraft', Arial;
+    font-size: 300%;
+    color: white;
+    cursor: pointer;
+}
+.search-button:hover {
+    border: 4px solid rgb(153, 153, 153);
+    color: rgb(153, 153, 153);
+}
+.search-button:disabled {
+    background-color: rgb(153, 153, 153);
+    color: white;
+    border: 4px solid rgb(153, 153, 153);
+}
+.search-button:active {
+    background-color: rgb(255, 255, 255);
+}
+
+.box-image {
+    transform: scale(0.5);
+}
+
+.results-container {
+    background-color: rgba(0, 0, 0, 0.6);
+    border: 5px solid rgb(184, 184, 184);
+    border-radius: 10px;
+    display: grid; /* Enables grid layout */
+    grid-template-columns: repeat(auto-fill, minmax(10%, 0fr)); /* Creates dynamic columns */
+    gap: 10px; /* Spacing between the items */
+    padding: 10px; /* Adds padding inside the container */
+}
+
+.found-item {
+    background-color: rgba(255, 255, 255, 0.041);
+    border: 2px solid white;
+    padding: 15px;
+    border-radius: 10px;
+    text-align: center;
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    color: #ffffff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.15s cubic-bezier(0.39, 0.575, 0.565, 1); /* Optional: Add a hover effect */
+}
+
+/* Optional hover effect for interaction */
+.found-item:hover {
+    color: black;
+    background-color: rgb(255, 255, 255);
+    transform: scale(1.025); /* Slight zoom-in effect on hover */
+}
