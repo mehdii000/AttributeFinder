@@ -2,9 +2,15 @@
 var searchButton = document.getElementById("search_button");
 const container = document.querySelector('.results-container');
 const API_URL = "https://api.hypixel.net/skyblock/auctions";
+let auctionCache = new Map();
+let lastScan = -1;
 
 // Fetch a specific page from the auction house API
 async function fetchPage(page) {
+    if (auctionCache.has(page) && Date.now() - lastScan < 10000) {
+        return auctionCache.get(page); // Return cached data if available
+    }
+    
     try {
         const response = await fetch(`${API_URL}?page=${page}`);
         const data = await response.json();
@@ -14,6 +20,7 @@ async function fetchPage(page) {
             return null; // Stop fetching if there's an error
         }
 
+        auctionCache.set(page, data.auctions); // Store in cache
         return data.auctions; 
     } catch (error) {
         console.error(`Failed to fetch page ${page}:`, error);
@@ -25,6 +32,7 @@ async function fetchPage(page) {
 async function scanAuctionHouse(matches, attribute1, attribute2) {
     let page = 0;
     let hasMorePages = true;
+    container.innerHTML = ""; // Clear the container before each scan
     const foundItems = []; // Array to hold found items
 
     // Disable the search button to prevent multiple clicks
@@ -34,7 +42,6 @@ async function scanAuctionHouse(matches, attribute1, attribute2) {
     while (hasMorePages) {
         console.log(`Fetching page ${page}...`);
         let auctions = await fetchPage(page);
-
         if (!auctions || auctions.length === 0) {
             hasMorePages = false; // Stop if no more auctions are found
             console.log("No more pages to fetch or an error occurred.");
@@ -118,6 +125,7 @@ function formatPrice(price) {
 // Attach click event to the search button
 searchButton.addEventListener("click", function() {
     // Fetch the values when the search button is clicked
+    lastScan = Date.now();
     var attribute1 = document.getElementById("first_attribute").value;
     var attribute2 = document.getElementById("second_attribute").value;
     var itemsFilter = document.getElementById("items_filter").value;
